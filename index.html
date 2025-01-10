@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="""en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,7 +21,9 @@
                 fetch(scriptUrl)
                     .then(response => response.text())
                     .then(scriptContent => {
-                        newWindow.document.write(`<script>${scriptContent}<\/script>`);
+                        const scriptElement = newWindow.document.createElement('script');
+                        scriptElement.textContent = scriptContent;
+                        newWindow.document.body.appendChild(scriptElement);
                     })
                     .catch(error => console.error('Error loading script:', error));
             });
