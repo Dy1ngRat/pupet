@@ -42,6 +42,7 @@
                         } else {
                             clearInterval(interval); // Stop after two executions
                             console.log('Both scripts executed. Stopping page load.');
+                            setTimeout(500)
                             window.stop(); // Stop page loading
                         }
                     }, 3000); // 3 seconds delay between executions
