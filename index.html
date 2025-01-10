@@ -39,6 +39,7 @@
                         if (executionCount < 2) {
                             executeScript();
                             executionCount++;
+                            setTimeout(3000)
                         } else {
                             clearInterval(interval); // Stop after two executions
                         }
