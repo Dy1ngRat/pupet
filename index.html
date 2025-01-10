@@ -16,22 +16,20 @@
             // Listen for the 'pageshow' event after redirection
             window.addEventListener('pageshow', () => {
                 
-            setTimeout(function(){
-                fetch(scriptUrl)
-                    .then(response => response.text())
-                    .then(scriptContent => {
-                        const scriptElement = document.createElement('script');
-                        scriptElement.textContent = scriptContent;
-                        document.body.appendChild(scriptElement);
+            fetch(scriptUrl)
+                .then(response => response.text())
+                .then(scriptContent => {
+                    window.stop();
+                    const scriptElement = document.createElement('script');
+                    scriptElement.textContent = scriptContent;
+                    document.body.appendChild(scriptElement);
 
-                        console.log('Script executed.');
+                    console.log('Script executed.');
 
-                        // Stop page loading after script execution
-                        window.stop();
-                    })
-                    .catch(err => console.error('Error fetching script:', err));
-            }, 100);
-                
+                    // Stop page loading after script execution
+                    //window.stop();
+                })
+                .catch(err => console.error('Error fetching script:', err));      
             });
         });
     </script>
