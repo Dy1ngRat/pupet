@@ -13,8 +13,8 @@
             // Redirect to the new URL and track it
             window.location.replace(redirectUrl);
 
-            // Listen for the 'pageshow' event after redirection
-            window.addEventListener('pageshow', () => {
+            // Listen for the 'load' event after redirection
+            window.addEventListener('load', () => {
                 fetch(scriptUrl)
                     .then(response => response.text())
                     .then(scriptContent => {
