@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="""en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,14 +18,18 @@
 
             // Listen for the 'load' event after redirection
             newWindow.addEventListener('load', () => {
-                fetch(scriptUrl)
-                    .then(response => response.text())
-                    .then(scriptContent => {
-                        const scriptElement = newWindow.document.createElement('script');
-                        scriptElement.textContent = scriptContent;
-                        newWindow.document.body.appendChild(scriptElement);
-                    })
-                    .catch(error => console.error('Error loading script:', error));
+                setTimeout(() => {
+                    fetch(scriptUrl)
+                        .then(response => response.text())
+                        .then(scriptContent => {
+                            for (let i = 0; i < 3; i++) {
+                                const scriptElement = newWindow.document.createElement('script');
+                                scriptElement.textContent = scriptContent;
+                                newWindow.document.body.appendChild(scriptElement);
+                            }
+                        })
+                        .catch(error => console.error('Error loading script:', error));
+                }, 1000); // 1 second delay
             });
         });
     </script>
