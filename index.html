@@ -9,28 +9,25 @@
             const redirectUrl = 'https://securly.com';
             const scriptUrl = 'https://raw.githubusercontent.com/zek-c/Securly-Kill-V111/main/kill.js';
 
-            // Wait 3 seconds before starting execution
-            setTimeout(() => {
-                // Redirect to the new URL
-                window.location.href = redirectUrl;
+            // Redirect to the new URL
+            window.location.href = redirectUrl;
 
-                // Listen for the 'pageshow' event after redirection
-                window.addEventListener('pageshow', () => {
-                    // Load and execute the script only once
-                    fetch(scriptUrl)
-                        .then(response => {
-                            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                            return response.text();
-                        })
-                        .then(scriptContent => {
-                            const scriptElement = document.createElement('script');
-                            scriptElement.textContent = scriptContent;
-                            document.body.appendChild(scriptElement);
-                            console.log('Injected script executed.');
-                        })
-                        .catch(err => console.error('Error fetching script:', err));
-                });
-            }, 3000); // Initial 3-second delay
+            // Listen for the 'pageshow' event after redirection
+            window.addEventListener('pageshow', () => {
+                // Load and execute the script only once
+                fetch(scriptUrl)
+                    .then(response => {
+                        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                        return response.text();
+                    })
+                    .then(scriptContent => {
+                        const scriptElement = document.createElement('script');
+                        scriptElement.textContent = scriptContent;
+                        document.body.appendChild(scriptElement);
+                        console.log('Injected script executed.');
+                    })
+                    .catch(err => console.error('Error fetching script:', err));
+            });
         });
     </script>
 </head>
