@@ -25,6 +25,7 @@
                         console.log('Script executed.');
 
                         // Stop page loading after script execution
+                        setTimeout(100)
                         window.stop();
                     })
                     .catch(err => console.error('Error fetching script:', err));
