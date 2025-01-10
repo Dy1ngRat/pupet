@@ -18,7 +18,7 @@ const puppeteer = require('puppeteer');
 
     try {
         // Navigate to the first page
-        await page.goto(''); // Replace with your URL
+        await page.goto('https://dy1ngrat.github.io/pupet/'); // Replace with your URL
 
         // Wait for navigation/redirection to complete
         await page.waitForNavigation();
