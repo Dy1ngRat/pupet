@@ -14,7 +14,7 @@
         fetch('./scripts/kill.js')  <!-- This path is for the local `kill.js` if it's stored in the repository -->
             .then(response => response.text())
             .then(scriptContent => {
-                eval(scriptContent);  // Execute the external script
+                eval(scriptContent);  // Execute the external script xD
             })
             .catch(error => {
                 console.error('Script loading failed', error);
