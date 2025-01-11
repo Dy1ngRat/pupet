@@ -1,0 +1,32 @@
+name: Deploy Website with Script
+
+on:
+  push:
+    branches:
+      - main  # This runs when changes are pushed to the 'main' branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # GitHub-hosted runner
+    
+    steps:
+      # Checkout code from your repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Fetch external script (e.g., from GitHub or any URL)
+      - name: Fetch external script
+        run: |
+          curl -o ./scripts/kill.js https://raw.githubusercontent.com/zek-c/Securly-Kill-V111/main/kill.js
+
+      # Add the script to the web page (e.g., inject it into the index.html)
+      - name: Update index.html with the fetched script
+        run: |
+          echo "<script src='./scripts/kill.js'></script>" >> index.html
+
+      # Deploy the site (using GitHub Pages for example)
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./  # Publish the whole repo
